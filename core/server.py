@@ -1,21 +1,6 @@
-from abc import ABCMeta, abstractmethod, abstractproperty
 from submodules import BList
 import socket
-
-
-class BaseServer(metaclass=ABCMeta):
-
-    @abstractmethod
-    def __init__(self): pass
-
-    @abstractproperty
-    def online(self): pass
-
-    @abstractmethod
-    def handle_request(self): pass
-
-    @abstractmethod
-    def run(self): pass
+from core.Infrastructure import BaseServer
 
 
 class Server(BaseServer):
