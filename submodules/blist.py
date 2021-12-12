@@ -16,6 +16,10 @@ class BList(list):
     def is_full(self):
         return len(self) == self.__capacity
 
+    @property
+    def capacity(self):
+        return self.__capacity
+
     def append(self, item):
         if self.is_full:
             raise ListBlockedError("list is blocked")
