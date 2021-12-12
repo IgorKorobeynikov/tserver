@@ -1,4 +1,4 @@
-from submodules import BList
+from submodules import BList, show_stat
 import socket
 from core.Infrastructure import BaseServer
 
@@ -11,14 +11,16 @@ class Server(BaseServer):
 
     @property
     def online(self):
-        # Not implemented yet
-        pass
+        return len(self.clients)
 
     def handle_request(self, request):
         pass
 
     def run(self):
         while True:
+
+            show_stat(socket.port, self.clients, self.clients.capacity)
+
             raw_data, addres = self.socket.recvfrom(1024)
             data = raw_data.decode()
 
