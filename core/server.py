@@ -9,12 +9,14 @@ class Server(BaseServer):
         self.port = port
         self.socket.bind(('', port))
         self.clients = BList(max_conns)
+        self.total_recv = 0
+        self.total_sent = 0
 
     @property
-    def online(self):
+    def online(self) -> int:
         return len(self.clients)
 
-    def handle_request(self, request):
+    def handle_request(self, request: str):
         pass
 
     def run(self):
@@ -33,9 +35,14 @@ class Server(BaseServer):
                 continue
 
             if data == "req{get_online}":
-                self.socket.sendto(str(self.online).encode("ascii"), addres)
+                to_send = str(self.online).encode("ascii")
+                self.socket.sendto(to_send, addres)
+                self.total_sent += to_send.__sizeof__()
+                continue
 
             for client in self.clients:
                 if client == addres:
                     continue
-                self.socket.sendto(raw_data, client)
+                to_send = (raw_data, client)
+                self.socket.sendto(*to_send)
+                self.total_sent += to_send.__sizeof__()

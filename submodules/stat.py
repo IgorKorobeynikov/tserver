@@ -2,7 +2,7 @@
 from os import system
 
 
-def show_stat(port, clients, max_conns):
+def show_stat(port: int, clients, max_conns: int):
     system("clear")
     stat = f"""
 ========= Server is started =========
