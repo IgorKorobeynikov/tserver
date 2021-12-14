@@ -21,11 +21,13 @@ class Server(BaseServer):
 
     def run(self):
         while True:
-
-            show_stat(self.port, self.clients, self.clients.capacity)
+            # print(self.total_recv, self.total_sent)
+            show_stat(self)
 
             raw_data, addres = self.socket.recvfrom(1024)
             data = raw_data.decode()
+
+            self.total_recv += data.__sizeof__()
 
             if addres not in self.clients:
                 self.clients.append(addres)
@@ -39,10 +41,12 @@ class Server(BaseServer):
                 self.socket.sendto(to_send, addres)
                 self.total_sent += to_send.__sizeof__()
                 continue
-
+            
             for client in self.clients:
                 if client == addres:
                     continue
                 to_send = (raw_data, client)
+
                 self.socket.sendto(*to_send)
                 self.total_sent += to_send.__sizeof__()
+            

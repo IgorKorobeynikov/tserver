@@ -2,7 +2,12 @@
 from os import system
 
 
-def show_stat(port: int, clients, max_conns: int):
+def show_stat(self):
+    port = self.port
+    clients = self.clients
+    max_conns = self.clients.capacity
+    sent = self.total_sent
+    recv = self.total_recv
     system("clear")
     stat = f"""
 ========= Server is started =========
@@ -21,10 +26,10 @@ ID     Client IP:PORT        Ping
     some_bruh += "————————————————————————————————————"
 
     stat += some_bruh
-    stat += """
+    stat += f"""
 
 =====================================
-= Total data sent: 9KB.             =
-= Total data recived: 3KB           =
+= Total data sent: {(str(sent//1024)+'KB.').ljust(17)}=
+= Total data recived: {(str(recv//1024)+'KB.').ljust(14 )}=
 ====================================="""
     print(stat)
