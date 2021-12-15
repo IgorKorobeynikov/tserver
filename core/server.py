@@ -51,4 +51,3 @@ class Server(BaseServer):
 
                 self.socket.sendto(*to_send)
                 self.total_sent += to_send.__sizeof__()
-
