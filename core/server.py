@@ -1,10 +1,10 @@
-from submodules import BList, show_stat
+from submodules import BList, ListBlockedError, show_stat
 import socket
 from core.Infrastructure import BaseServer
 
 
 class Server(BaseServer):
-    def __init__(self, port=9265, max_conns=10):
+    def __init__(self, port=9265, max_conns=2):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.port = port
         self.socket.bind(('', port))
@@ -21,7 +21,6 @@ class Server(BaseServer):
 
     def run(self):
         while True:
-            # print(self.total_recv, self.total_sent)
             show_stat(self)
 
             raw_data, addres = self.socket.recvfrom(1024)
@@ -30,7 +29,10 @@ class Server(BaseServer):
             self.total_recv += data.__sizeof__()
 
             if addres not in self.clients:
-                self.clients.append(addres)
+                try:
+                    self.clients.append(addres)
+                except ListBlockedError:
+                    continue
 
             if data == "disconnect":
                 self.clients.remove(addres)
@@ -41,7 +43,7 @@ class Server(BaseServer):
                 self.socket.sendto(to_send, addres)
                 self.total_sent += to_send.__sizeof__()
                 continue
-            
+
             for client in self.clients:
                 if client == addres:
                     continue
@@ -49,4 +51,4 @@ class Server(BaseServer):
 
                 self.socket.sendto(*to_send)
                 self.total_sent += to_send.__sizeof__()
-            
+
