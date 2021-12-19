@@ -1,0 +1,27 @@
+
+{
+  "request": "connect",
+  "client_data": {
+    "key": 3,
+    "id": null
+  }
+}
+
+{
+    "request": "push_data",
+    "client_data": {
+      "id": 832,
+      "key": "053addda6eef46739fa24fa4acad6aeb"
+      "posx": 0.0,
+      "posy": 0.0,
+      "rot": 90.0,
+      "turret_rot": 0.0,
+    }
+}
+
+{
+    "status": 0,
+    "response": [
+        {}
+    ]
+}
