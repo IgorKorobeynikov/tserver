@@ -81,13 +81,3 @@ class Server(BaseServer):
                 self.socket.sendto(response, addres)
                 self.total_sent += response.__sizeof__()
                 continue
-
-            '''
-            for client in self.clients:
-                if client == addres:
-                    continue
-                to_send = (raw_data, client)
-
-                self.socket.sendto(*to_send)
-                self.total_sent += to_send.__sizeof__()
-            '''
