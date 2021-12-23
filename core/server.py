@@ -24,8 +24,7 @@ class Server(BaseServer):
 
     def run(self):
         while True:
-            if round(self.timer.elsaped) % 2 == 0:
-                show_stat(self)
+            self.timer.do(show_stat, 1, self)
 
             raw_data, addres = self.socket.recvfrom(1024)
             data = loads(raw_data.decode())
