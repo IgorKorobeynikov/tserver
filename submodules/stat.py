@@ -20,10 +20,10 @@ Port: {port}
 ------------------------------------
 ID     Client IP:PORT        Ping
 ------------------------------------
-""")
+""", end="")
     for client in clients:
         print(
-            f"{str(client['id']).ljust(7)}{(str(client['addres'][0])+':'+str(client['addres'][1])).ljust(22)}{'1ms.'.ljust(7)}\n")
+            f"{str(client['id']).ljust(7)}{(str(client['addres'][0])+':'+str(client['addres'][1])).ljust(22)}{'1ms.'.ljust(7)}")
     print("------------------------------------")
 
     print(f"""
