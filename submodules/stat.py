@@ -9,28 +9,26 @@ def show_stat(self):
     sent = self.total_sent
     recv = self.total_recv
     system("clear")
-    stat = f"""
+    stat = print(f"""
 ========= Server is started =========
 Port: {port}
 ======== Max connections: {max_conns} ========
 {len(clients)} clients online!
-"""
+""")
 
-    some_bruh = """
+    print("""
 ------------------------------------
 ID     Client IP:PORT        Ping
 ------------------------------------
-"""
+""")
     for client in clients:
-        some_bruh += f"{str(client['id']).ljust(7)}{(str(client['addres'][0])+':'+str(client['addres'][1])).ljust(22)}{'1ms.'.ljust(7)}\n"
-    some_bruh += "------------------------------------"
+        print(f"{str(client['id']).ljust(7)}{(str(client['addres'][0])+':'+str(client['addres'][1])).ljust(22)}{'1ms.'.ljust(7)}\n")
+    print("------------------------------------")
 
-    stat += some_bruh
-    stat += f"""
+    print(f"""
 
 =====================================
 = Total data sent: {(str(sent//1024)+'KB.').ljust(17)}=
 = Total data recived: {(str(recv//1024)+'KB.').ljust(14 )}=
-====================================="""
-    print(stat, self.clients)
+=====================================""")
     

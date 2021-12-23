@@ -27,7 +27,6 @@ class Server(BaseServer):
 
             raw_data, addres = self.socket.recvfrom(1024)
             data = loads(raw_data.decode())
-            print(data)
             data['client_data']['addres'] = addres
 
             self.total_recv += data.__sizeof__()
@@ -38,40 +37,78 @@ class Server(BaseServer):
                     try:
                         data['client_data']['id'] = len(self.clients)
 
-                        repsonse = {
+                        response = dumps({
                             "status": 0,
                             "response": len(self.clients)
-                        }
+                        })
+
                         self.clients.append(data['client_data'])
                         self.addreses.append(addres)
-                        self.socket.sendto(dumps(repsonse).encode(), addres)
+                        self.socket.sendto(response.encode(), addres)
 
                     except ListBlockedError:
-                        repsonse = {
+                        response = dumps({
                             "status": -1,
                             "response": None
-                        }
-                        self.socket.sendto(dumps(repsonse).encode(), addres)
-
+                        })
+                        self.socket.sendto(response.encode(), addres)
+                continue
             if data['request'] == "disconnect":
-                if self.clients[self.clients[data['client_data']['id']]]['client_data']['key'] == data['client_data']['key']:
-                    del(self.clients[
-                        data['client_data']['id']
-                    ])
-                    self.addreses.remove(addres)
-                else:
-                    repsonse = dumps(
+                try:
+                    keyd = self.clients[data['client_data']
+                                        ['id']]['key']  # key of user by id
+
+                except IndexError as Error:
+                    response = dumps(
                         {
-                            "status": -2,
+                            "status": -20,
                             "response": None
                         }
                     )
-                    # not implemented yet...
+
+                    self.socket.sendto(response.encode(), addres)
+                    continue
+
+                except Exception as Error:
+                    response = dumps(
+                        {
+                            "status": -127,
+                            "response": None
+                        }
+                    )
+                    self.socket.sendto(response.encode(), addres)
+                    continue
+
+                if keyd == data['client_data']['key']:
+                    del(self.clients[
+                        data['client_data']['id']
+                    ])
+
+                    self.addreses.remove(addres)
+
+                    response = dumps(
+                        {
+                            "status": 0,
+                            "response": None
+                        }
+                    )
+
+                    self.socket.sendto(response.encode(), addres)
+
+                else:
+                    response = dumps(
+                        {
+                            "status": -21,
+                            "response": None
+                        }
+                    )
+
+                    self.socket.sendto(response.encode(), addres)
                 continue
 
             if data['request'] == "get_online":
 
-                repsonse = dumps(
+                response = dumps(
                     {
                         "status": 0,
                         "response": self.online
