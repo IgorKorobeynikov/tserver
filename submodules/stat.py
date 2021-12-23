@@ -22,7 +22,8 @@ ID     Client IP:PORT        Ping
 ------------------------------------
 """)
     for client in clients:
-        print(f"{str(client['id']).ljust(7)}{(str(client['addres'][0])+':'+str(client['addres'][1])).ljust(22)}{'1ms.'.ljust(7)}\n")
+        print(
+            f"{str(client['id']).ljust(7)}{(str(client['addres'][0])+':'+str(client['addres'][1])).ljust(22)}{'1ms.'.ljust(7)}\n")
     print("------------------------------------")
 
     print(f"""
@@ -31,4 +32,3 @@ ID     Client IP:PORT        Ping
 = Total data sent: {(str(sent//1024)+'KB.').ljust(17)}=
 = Total data recived: {(str(recv//1024)+'KB.').ljust(14 )}=
 =====================================""")
-    
