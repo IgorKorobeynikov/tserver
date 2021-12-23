@@ -1,4 +1,4 @@
-from submodules import BList, ListBlockedError, show_stat, Timer
+from submodules import BList, ListBlockedError, show_stat, Timer, Repeater
 import socket
 from core.Infrastructure import BaseServer
 from json import dumps, loads
@@ -13,7 +13,7 @@ class Server(BaseServer):
         self.clients = BList(max_conns)
         self.total_recv = 0
         self.total_sent = 0
-        self.timer = Timer()
+        self.repeater = Repeater(1, show_stat, self)
 
     @property
     def online(self) -> int:
@@ -23,8 +23,8 @@ class Server(BaseServer):
         pass
 
     def run(self):
+        self.repeater.do()
         while True:
-            self.timer.do(show_stat, 1, self)
 
             raw_data, addres = self.socket.recvfrom(1024)
             data = loads(raw_data.decode())
