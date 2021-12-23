@@ -1,4 +1,4 @@
-from submodules import BList, ListBlockedError, show_stat
+from submodules import BList, ListBlockedError, show_stat, Timer
 import socket
 from core.Infrastructure import BaseServer
 from json import dumps, loads
@@ -13,6 +13,7 @@ class Server(BaseServer):
         self.clients = BList(max_conns)
         self.total_recv = 0
         self.total_sent = 0
+        self.timer = Timer()
 
     @property
     def online(self) -> int:
@@ -23,7 +24,8 @@ class Server(BaseServer):
 
     def run(self):
         while True:
-            show_stat(self)
+            if round(self.timer.elsaped) % 2 == 0:
+                show_stat(self)
 
             raw_data, addres = self.socket.recvfrom(1024)
             data = loads(raw_data.decode())
