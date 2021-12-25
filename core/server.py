@@ -1,12 +1,12 @@
-from submodules import BList, ListBlockedError, show_stat, Timer, Repeater, UdpSocket
+from submodules import BList, ListBlockedError, show_stat, Repeater, UdpSocket
 import socket
 from core.Infrastructure import BaseServer
 from json import dumps, loads
 
 
 class Server(BaseServer):
-    def __init__(self, port=9265, max_conns=2):
-        self.socket = UdpSocket()  # socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    def __init__(self, port=9265, max_conns=100):
+        self.socket = UdpSocket()
         self.addreses = []  # contains addresses of all conn clients
         self.port = port
         self.socket.bind(("", port))
@@ -18,6 +18,32 @@ class Server(BaseServer):
             "connect": self.connect,
             "disconnect": self.disconnect,
         }
+
+    def push_data(self, request: dict) -> dict:
+        id = request['id']
+
+        keyd = self.clients[request["client_data"]["id"]][
+            "key"
+        ]  # key of user by id
+
+        if keyd == request["client_data"]["key"]:
+            self.clients[id]['posx'] = request['request_body']['posx']
+            self.clients[id]['posy'] = request['request_body']['posy']
+            self.clients[id]['rot'] = request['request_body']['rot']
+            self.clients[id]['turret_rot'] = request['request_body']['turret_rot']
+            response = {
+                "status": 0,
+                "response": self.online
+            }
+            return response
+        else:
+            response = {
+                "status": -127,
+                "response": self.online
+            }
+            return response
+    def get_data(self):
+        pass
 
     @property
     def online(self) -> int:

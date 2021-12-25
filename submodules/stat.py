@@ -32,8 +32,6 @@ ID     Client IP:PORT        Ping
         )
     print("------------------------------------")
 
-    
-
     print(
         f"""
 
