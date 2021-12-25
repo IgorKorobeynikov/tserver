@@ -8,7 +8,7 @@ class Timer(object):
 
     @property
     def elsaped(self):
-        return time()-self.start
+        return time() - self.start
 
     def do(self, func, delay, *args, **kwargs):
 

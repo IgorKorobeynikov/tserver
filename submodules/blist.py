@@ -9,8 +9,7 @@ class ListBlockedError(OverflowError):
 class BList(list):
     def __init__(self, capacity: int, items=()):
         if len(items) > capacity:
-            raise OverflowError(
-                "The initial size of list is bigger then max size")
+            raise OverflowError("The initial size of list is bigger then max size")
 
         self.__capacity = capacity
         super().__init__(items)
