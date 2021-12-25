@@ -22,6 +22,6 @@ class UdpSocket(socket.socket):
     def recvfrom(self, buffersize):
         raw_data, addres = super().recvfrom(buffersize)
 
-        self.total_recv += len(raw_data)
+        self.__total_recv += len(raw_data)
 
         return raw_data, addres

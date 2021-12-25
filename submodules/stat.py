@@ -6,8 +6,8 @@ def show_stat(self):
     port = self.port
     clients = self.clients
     max_conns = self.clients.capacity
-    sent = self.total_sent
-    recv = self.total_recv
+    sent = self.socket.total_sent
+    recv = self.socket.total_recv
     system("clear")
     stat = print(
         f"""
@@ -31,6 +31,8 @@ ID     Client IP:PORT        Ping
             f"{str(client['id']).ljust(7)}{(str(client['addres'][0])+':'+str(client['addres'][1])).ljust(22)}{'1ms.'.ljust(7)}"
         )
     print("------------------------------------")
+
+    
 
     print(
         f"""

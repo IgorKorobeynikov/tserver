@@ -6,13 +6,11 @@ from json import dumps, loads
 
 class Server(BaseServer):
     def __init__(self, port=9265, max_conns=2):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket = UdpSocket()  # socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.addreses = []  # contains addresses of all conn clients
         self.port = port
         self.socket.bind(("", port))
         self.clients = BList(max_conns)
-        self.total_recv = 0
-        self.total_sent = 0
         self.repeater = Repeater(3, show_stat, self)
         self.buf_request = None
         self.requests = {
@@ -42,7 +40,7 @@ class Server(BaseServer):
                 request["client_data"]["id"] = len(self.clients)
 
                 response = {
-                    "status": 0, 
+                    "status": 0,
                     "response": len(self.clients)
                 }
 
@@ -51,7 +49,7 @@ class Server(BaseServer):
                 return response
             except ListBlockedError:
                 response = {
-                    "status": -1, 
+                    "status": -1,
                     "response": None
                 }
                 return response
