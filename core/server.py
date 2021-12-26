@@ -150,14 +150,14 @@ class Server(BaseServer):
                     "status": -3,
                     "response": None
                 }
-                self.socket.sendto(
-                    self.socket.sendto(dumps(response).encode(), addres)
-                )
+
+                self.socket.sendto(dumps(response).encode(), addres)
+
             except Exception:
                 response = {
                     "status": -127,
                     "response": None
                 }
-                self.socket.sendto(
-                    self.socket.sendto(dumps(response).encode(), addres)
-                )
+                
+                self.socket.sendto(dumps(response).encode(), addres)
+                
