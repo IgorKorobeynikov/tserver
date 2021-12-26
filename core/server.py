@@ -2,6 +2,8 @@ from submodules import BList, ListBlockedError, show_stat, Repeater, UdpSocket
 import socket
 from core.Infrastructure import BaseServer
 from json import dumps, loads
+from typing import Union
+from json.decoder import JSONDecodeError
 
 
 class Server(BaseServer):
@@ -17,10 +19,12 @@ class Server(BaseServer):
             "get_online": self.get_online,
             "connect": self.connect,
             "disconnect": self.disconnect,
+            "push_data": self.push_data,
+            "get_data": self.get_data
         }
 
     def push_data(self, request: dict) -> dict:
-        id = request['id']
+        id = request['client_data']['id']
 
         keyd = self.clients[request["client_data"]["id"]][
             "key"
@@ -33,17 +37,18 @@ class Server(BaseServer):
             self.clients[id]['turret_rot'] = request['request_body']['turret_rot']
             response = {
                 "status": 0,
-                "response": self.online
+                "response": None
             }
             return response
         else:
             response = {
                 "status": -127,
-                "response": self.online
+                "response": None
             }
             return response
-    def get_data(self):
-        pass
+
+    def get_data(self, request: dict) -> BList:
+        return self.clients
 
     @property
     def online(self) -> int:
@@ -123,7 +128,7 @@ class Server(BaseServer):
 
             return response
 
-    def handle_request(self, request: dict) -> dict:
+    def handle_request(self, request: dict) -> Union[dict, BList]:
         return self.requests[request["request"]].__call__(request)
 
     def run(self):
@@ -131,9 +136,28 @@ class Server(BaseServer):
         while True:
 
             raw_data, addres = self.socket.recvfrom(1024)
-            request = loads(raw_data.decode())
-            request["client_data"]["addres"] = addres
 
-            self.socket.sendto(
-                dumps(self.handle_request(request)).encode(), addres
-            )
+            try:
+                request = loads(raw_data.decode())
+
+                request["client_data"]["addres"] = addres
+
+                self.socket.sendto(
+                    dumps(self.handle_request(request)).encode(), addres
+                )
+            except JSONDecodeError:
+                response = {
+                    "status": -3,
+                    "response": None
+                }
+                self.socket.sendto(
+                    self.socket.sendto(dumps(response).encode(), addres)
+                )
+            except Exception:
+                response = {
+                    "status": -127,
+                    "response": None
+                }
+                self.socket.sendto(
+                    self.socket.sendto(dumps(response).encode(), addres)
+                )
