@@ -13,7 +13,7 @@ class Server(BaseServer):
         self.port = port
         self.socket.bind(("", port))
         self.clients = BList(max_conns)
-        self.repeater = Repeater(3, show_stat, self)
+        self.repeater = Repeater(1, show_stat, self)
         self.buf_request = None
         self.requests = {
             "get_online": self.get_online,
