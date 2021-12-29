@@ -16,7 +16,3 @@ Multiplayer game-server for TwisteRTanks
 -1 - Error. Maximum connected clients to server
  0 - Succes
 ```
-
-Dicord server of game:
-
-https://discord.gg/T6gPk2HwtP

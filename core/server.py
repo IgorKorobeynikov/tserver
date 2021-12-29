@@ -158,6 +158,5 @@ class Server(BaseServer):
                     "status": -127,
                     "response": None
                 }
-                
+
                 self.socket.sendto(dumps(response).encode(), addres)
-                
