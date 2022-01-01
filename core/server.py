@@ -17,7 +17,7 @@ class Server(BaseServer):
         self.clients = BList(max_conns)
         self.repeater = Repeater(1, show_stat, self)
         self.buf_request = None
-        self.msg_buffer = deque(maxsize=chat_size)
+        self.msg_buffer = deque(maxlen=chat_size)
         self.requests = {
             "get_online": self.get_online,
             "connect": self.connect,
