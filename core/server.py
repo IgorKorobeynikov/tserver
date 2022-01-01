@@ -1,20 +1,23 @@
-from submodules import BList, ListBlockedError, show_stat, Repeater, UdpSocket
-import socket
-from core.Infrastructure import BaseServer
 from json import dumps, loads
-from typing import Union
 from json.decoder import JSONDecodeError
+from typing import Union
+from queue import deque
+import socket
+
+from submodules import BList, ListBlockedError, show_stat, Repeater, UdpSocket
+from core.Infrastructure import BaseServer
 
 
 class Server(BaseServer):
-    def __init__(self, port=9265, max_conns=100):
+    def __init__(self, port=9265, max_conns=100, chat_size=10):
         self.socket = UdpSocket()
-        self.addreses = []  # contains addresses of all conn clients
+        self.addreses = []  # contains addresses of all connected clients
         self.port = port
         self.socket.bind(("", port))
         self.clients = BList(max_conns)
         self.repeater = Repeater(1, show_stat, self)
         self.buf_request = None
+        self.msg_buffer = deque(maxsize=chat_size)
         self.requests = {
             "get_online": self.get_online,
             "connect": self.connect,
@@ -22,6 +25,27 @@ class Server(BaseServer):
             "push_data": self.push_data,
             "get_data": self.get_data
         }
+
+    def get_messages(self, request: dict):
+        response = {
+            "status": 0,
+            "response": list(self.msg_buffer)
+        }
+        return response
+
+    def push_message(self, request: dict) -> dict:
+        message = request['request_body']['msg_content']
+        nick = request['request_body']['nick']
+        if len(message):
+            self.msg_buffer.append([message, nick])
+
+            response = {
+                "status": 0,
+                "response": None
+
+            }
+
+            return response
 
     def push_data(self, request: dict) -> dict:
         id = request['client_data']['id']
@@ -47,8 +71,12 @@ class Server(BaseServer):
             }
             return response
 
-    def get_data(self, request: dict) -> BList:
-        return self.clients
+    def get_data(self, request: dict) -> dict:
+        response = {
+            "status": 0,
+            "response": self.clients
+        }
+        return response
 
     @property
     def online(self) -> int:

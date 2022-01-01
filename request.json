@@ -27,3 +27,15 @@
         {}
     ]
 }
+
+{
+  "request": "push_message",
+  "request_body": {
+    "msg_content": "hello", 
+    "nick": "linux-admin"
+  },
+  "client_data": {
+    "key": "725d021c911847088427c1211781955e",
+    "id": 0
+  }
+}
