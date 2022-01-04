@@ -40,3 +40,4 @@ ID     Client IP:PORT        Ping
 = Total data recived: {(str(recv//1024)+'KB.').ljust(14 )}=
 ====================================="""
     )
+    print(f"admin key is: {self.admin_key}")

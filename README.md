@@ -6,6 +6,9 @@ Multiplayer game-server for TwisteRTanks
 ```
 -127 - Unknown error.
 
+-4X - Permission denied.
+-40 - Permission denied. Invalid key
+
 -3  - Invalid packet.
 
 -2X - Connection is corrupted.

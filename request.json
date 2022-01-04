@@ -39,3 +39,13 @@
     "id": 0
   }
 }
+
+{
+  "request": "clear_chat",
+  "client_data": {
+    "key": "тут типо админ кей",
+    "id": 0
+  }
+}
+
+

@@ -1,7 +1,9 @@
 from json import dumps, loads
 from json.decoder import JSONDecodeError
-from typing import Union
+from typing import Union, Dict
 from queue import deque
+from copy import deepcopy
+from uuid import uuid4
 import socket
 
 from submodules import BList, ListBlockedError, show_stat, Repeater, UdpSocket
@@ -18,15 +20,44 @@ class Server(BaseServer):
         self.repeater = Repeater(1, show_stat, self)
         self.buf_request = None
         self.msg_buffer = deque(maxlen=chat_size)
+        self.admin_key = uuid4().hex
         self.requests = {
             "get_online": self.get_online,
             "connect": self.connect,
             "disconnect": self.disconnect,
             "push_data": self.push_data,
-            "get_data": self.get_data
+            "get_data": self.get_data,
+            "get_messages": self.get_messages,
+            "push_message": self.push_message,
+            "clear_chat": self.reset_chat
         }
 
-    def get_messages(self, request: dict):
+    def clear_chat(self, request: dict) -> dict:
+
+        if request['client_data']['key'] == self.admin_key:
+            self.msg_buffer.clear()
+            # только админы могут чистить чат
+            # only admins can clean the chat
+            response = {
+                "status": 0,
+                "response": None
+            }
+            return response
+        
+        response = {
+            "status": -40,
+            "response": None
+        }
+        return response
+
+    @staticmethod
+    def reset_keys(data: list) -> list:
+        data = deepcopy(data)
+        for client_data in data:
+            client_data['key'] = None
+        return data
+
+    def get_messages(self, request: dict) -> dict:
         response = {
             "status": 0,
             "response": list(self.msg_buffer)
@@ -74,7 +105,7 @@ class Server(BaseServer):
     def get_data(self, request: dict) -> dict:
         response = {
             "status": 0,
-            "response": self.clients
+            "response": self.reset_keys(self.clients)
         }
         return response
 

@@ -15,7 +15,6 @@ class MapGenerator(object):
         self.parser = parser
 
     def gen(self):
-
         with open(self.filename, "wb") as map:
             for x in range(self.nx):
                 for y in range(self.ny):
