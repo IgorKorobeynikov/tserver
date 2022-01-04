@@ -29,7 +29,7 @@ class Server(BaseServer):
             "get_data": self.get_data,
             "get_messages": self.get_messages,
             "push_message": self.push_message,
-            "clear_chat": self.reset_chat
+            "clear_chat": self.clear_chat
         }
 
     def clear_chat(self, request: dict) -> dict:
