@@ -1,6 +1,6 @@
 # TwisteRServer
 
-Multiplayer game-server for TwisteRTanks
+Multiplayer game-server for TwisteRTanks.
 
 ## Some reference about status codes
 ```
