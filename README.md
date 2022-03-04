@@ -28,3 +28,4 @@ Multiplayer game-server for TwisteRTanks.
 * ~~Python API wrapper lib~~
 * GUI client.
 * Base docs
+* Async
