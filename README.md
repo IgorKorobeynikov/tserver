@@ -19,4 +19,11 @@ Multiplayer game-server for TwisteRTanks.
 -1 - Error. Maximum connected clients to server
  0 - Succes
 ```
-/
+
+## TODO:
+* Replace all generic typehints
+* Map generation
+* Chat (~70% done)
+* ~~API~~
+* ~~Python API wrapper lib~~
+* GUI client.
