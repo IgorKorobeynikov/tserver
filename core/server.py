@@ -4,10 +4,13 @@ from typing import Union, Dict
 from queue import deque
 from copy import deepcopy
 from uuid import uuid4
-import socket
+from random import randint
+from io import BytesIO
+from hashlib import md5
 
 from submodules import BList, ListBlockedError, show_stat, Repeater, UdpSocket
 from core.Infrastructure import BaseServer
+
 
 
 class Server(BaseServer):
@@ -21,6 +24,8 @@ class Server(BaseServer):
         self.buf_request = None
         self.msg_buffer = deque(maxlen=chat_size)
         self.admin_key = uuid4().hex
+        self.raw_map = BytesIO()
+        self.init_map()
         self.requests = {
             "get_online": self.get_online,
             "connect": self.connect,
@@ -29,8 +34,36 @@ class Server(BaseServer):
             "get_data": self.get_data,
             "get_messages": self.get_messages,
             "push_message": self.push_message,
-            "clear_chat": self.clear_chat
+            "clear_chat": self.clear_chat,
+            "get_map": self.get_map
         }
+
+    def init_map(self):
+
+        for x in range(0, 3200, 64):
+            for y in range(0, 3200, 64):
+
+                i = randint(0, 3)
+
+                self.raw_map.write(
+                    b"".join(
+                        [
+                            i.to_bytes(1, "big"),
+                            x.to_bytes(2, "big"),
+                            y.to_bytes(2, "big")
+                        ])
+                )
+
+    def get_map(self, request: dict) -> dict:
+        
+        response = {
+            "status": 0,
+            "response": {
+                "checksum": md5(self.raw_map.getvalue()).hexdigest(),
+                "map": list(bytearray(self.raw_map.getvalue()))
+            }
+        }
+        return response
 
     def clear_chat(self, request: dict) -> dict:
 
@@ -43,7 +76,7 @@ class Server(BaseServer):
                 "response": None
             }
             return response
-        
+
         response = {
             "status": -40,
             "response": None
@@ -212,7 +245,7 @@ class Server(BaseServer):
 
                 self.socket.sendto(dumps(response).encode(), addres)
 
-            except Exception:
+            except Exception as exc:
                 response = {
                     "status": -127,
                     "response": None
