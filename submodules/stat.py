@@ -1,6 +1,6 @@
 # Warning! Shit code.
+from platform import system as platform
 from os import system
-
 
 def show_stat(self):
     port = self.port
@@ -8,8 +8,13 @@ def show_stat(self):
     max_conns = self.clients.capacity
     sent = self.socket.total_sent
     recv = self.socket.total_recv
-    system("clear")
-    stat = print(
+    
+    if platform() == "Windows":
+        system("cls")
+    else: 
+        system("clear")
+    
+    print(
         f"""
 ========= Server is started =========
 Port: {port}
@@ -41,3 +46,4 @@ ID     Client IP:PORT        Ping
 ====================================="""
     )
     print(f"admin key is: {self.admin_key}")
+    print(self.clients)

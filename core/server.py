@@ -19,7 +19,10 @@ class Server(BaseServer):
         self.addreses = []  # contains addresses of all connected clients
         self.port = port
         self.socket.bind(("", port))
+
+        # [{"key": str, id: int, addres: tuple, posx: int, posy: int, rot: float, turret_rot: float}, ...]
         self.clients = BList(max_conns)
+        
         self.repeater = Repeater(1, show_stat, self)
         self.buf_request = None
         self.msg_buffer = deque(maxlen=chat_size)
@@ -35,8 +38,16 @@ class Server(BaseServer):
             "get_messages": self.get_messages,
             "push_message": self.push_message,
             "clear_chat": self.clear_chat,
-            "get_map": self.get_map
+            "get_map": self.get_map,
+            "ping": self.pong
         }
+
+    def pong(self, request: dict) -> dict:
+        response = {
+            "status": 0,
+            "response": None
+        }
+        return response
 
     def init_map(self):
 
@@ -123,6 +134,7 @@ class Server(BaseServer):
             self.clients[id]['posy'] = request['request_body']['posy']
             self.clients[id]['rot'] = request['request_body']['rot']
             self.clients[id]['turret_rot'] = request['request_body']['turret_rot']
+            self.clients[id]['timeout'] = request['request_body']['timeout']
             response = {
                 "status": 0,
                 "response": None
@@ -225,10 +237,9 @@ class Server(BaseServer):
 
     def run(self):
         self.repeater.do()
+
         while True:
-
             raw_data, addres = self.socket.recvfrom(1024)
-
             try:
                 request = loads(raw_data.decode())
 
@@ -248,6 +259,7 @@ class Server(BaseServer):
             except Exception as exc:
                 response = {
                     "status": -127,
+                    "err_content": repr(exc),
                     "response": None
                 }
 
