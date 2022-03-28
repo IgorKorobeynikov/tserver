@@ -1,51 +1,31 @@
+/*
+    like your own protocol
+    *PS: comments are available in json5
+*/
 
 {
-  "request": "connect",
-  "request_body": {},
-  "client_data": {
-    "key": 3,
-    "id": null
-  }
-
-}
-
-{
-    "request": "push_data",
-    "client_data": {
-      "id": 1,
-      "key": "053addda6eef46739fa24fa4acad6aeb"
-      "posx": 0.0,
-      "posy": 0.0,
-      "rot": 90.0,
-      "turret_rot": 0.0,
-    }
-}
-
-{
-    "status": 0,
-    "response": [
-        {}
-    ]
-}
-
-{
-  "request": "push_message",
-  "request_body": {
-    "msg_content": "hello", 
-    "nick": "linux-admin"
+  "key": "bd3d68462ef04cf490dfa5dd1aa60d27", // required field
+  "id": 0, // required field
+  "addres": ('127.0.0.1', 58667), // required field
+  "client_timeout_ms": 98, // required field
+  "player_data": { 
+      /*
+          may be empty in this requests:
+              * ping
+              * disconnect
+              * online
+              * get_data
+              * get_map
+      */
+      "posx": 0, 
+      "posy": 0,
+      "rot": 0,
+      "turret_rot": 0
   },
-  "client_data": {
-    "key": "725d021c911847088427c1211781955e",
-    "id": 0
+  "request_body": {
+      // anything data
+      "msg_content": "hello",
+      "nick": "Someone",
+      "rank": 10
   }
 }
-
-{
-  "request": "clear_chat",
-  "client_data": {
-    "key": "тут типо админ кей",
-    "id": 0
-  }
-}
-
-
