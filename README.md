@@ -21,7 +21,7 @@ Multiplayer game-server for TwisteRTanks.
 ```
 
 ## Example of simple request:
-```json
+```json5
 /*
     like your own protocol
     *PS: comments are available in json5
