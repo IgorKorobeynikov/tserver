@@ -4,6 +4,7 @@ import socket
 class UdpSocket(socket.socket):
     def __init__(self):
         super().__init__(socket.AF_INET, socket.SOCK_DGRAM)
+        self.settimeout(0.5)
         self.__total_recv = 0
         self.__total_sent = 0
 
