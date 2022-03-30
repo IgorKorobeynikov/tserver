@@ -55,7 +55,7 @@ Multiplayer game-server for TwisteRTanks.
 }
 ```
 
-API Client here: https://github.com/TwisteRTanks/PyTwistClient
+API Client here: https://github.com/TwisteRTanks/PyTwistAPI
 
 ## TODO:
 * Replace all generic typehints
