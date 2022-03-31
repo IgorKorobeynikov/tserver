@@ -66,3 +66,4 @@ API Client here: https://github.com/TwisteRTanks/PyTwistAPI
 * GUI client.
 * Base docs
 * Async
+* Log pull
