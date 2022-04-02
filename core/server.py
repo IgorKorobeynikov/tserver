@@ -240,6 +240,7 @@ class Server(BaseServer):
 
         while True:
             raw_data, addres = self.socket.recvfrom(1024)
+            self.settimeout(0.5)
             try:
                 request = loads(raw_data.decode())
 
@@ -264,3 +265,4 @@ class Server(BaseServer):
                 }
 
                 self.socket.sendto(dumps(response).encode(), addres)
+            self.socket.resettimeout()
