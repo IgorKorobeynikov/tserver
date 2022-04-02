@@ -28,6 +28,7 @@ Multiplayer game-server for TwisteRTanks.
 */
 
 {
+  "request": "some-request", // required field
   "key": "bd3d68462ef04cf490dfa5dd1aa60d27", // required field
   "id": 0, // required field
   "addres": ('127.0.0.1', 58667), // required field
