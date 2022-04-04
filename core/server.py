@@ -20,9 +20,8 @@ class Server(BaseServer):
         self.port = port
         self.socket.bind(("", port))
 
-        # [{"key": str, id: int, addres: tuple, posx: int, posy: int, rot: float, turret_rot: float}, ...]
         self.clients = BList(max_conns)
-        
+
         self.repeater = Repeater(1, show_stat, self)
         self.buf_request = None
         self.msg_buffer = deque(maxlen=chat_size)
@@ -130,11 +129,9 @@ class Server(BaseServer):
         ]  # key of user by id
 
         if keyd == request["client_data"]["key"]:
-            self.clients[id]['posx'] = request['request_body']['posx']
-            self.clients[id]['posy'] = request['request_body']['posy']
-            self.clients[id]['rot'] = request['request_body']['rot']
-            self.clients[id]['turret_rot'] = request['request_body']['turret_rot']
-            self.clients[id]['timeout'] = request['request_body']['timeout']
+            self.clients[id]['player_data'] = request['player_data']
+            
+            self.clients[id]['client_timeout_ms'] = request['client_data']['client_timeout_ms']
             response = {
                 "status": 0,
                 "response": None
@@ -179,7 +176,18 @@ class Server(BaseServer):
                     "response": len(self.clients)
                 }
 
-                self.clients.append(request["client_data"])
+                client_data = {
+                    "key": request["client_data"]["key"],
+                    "id": request["client_data"]["id"],
+                    "addres": addres,
+                    "client_timeout_ms": request["client_data"]["client_timeout_ms"],
+
+                    "player_data": request["player_data"]
+                }
+                
+
+                # self.clients.append(request["client_data"])
+                self.clients.append(client_data)
                 self.addreses.append(addres)
                 return response
             except ListBlockedError:
@@ -240,7 +248,7 @@ class Server(BaseServer):
 
         while True:
             raw_data, addres = self.socket.recvfrom(1024)
-            self.settimeout(0.5)
+            self.socket.settimeout(0.5)
             try:
                 request = loads(raw_data.decode())
 
