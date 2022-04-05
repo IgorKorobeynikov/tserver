@@ -28,6 +28,7 @@ class Server(BaseServer):
         self.admin_key = uuid4().hex
         self.raw_map = BytesIO()
         self.init_map()
+        self.__is_run = True
         self.requests = {
             "get_online": self.get_online,
             "connect": self.connect,
@@ -40,6 +41,13 @@ class Server(BaseServer):
             "get_map": self.get_map,
             "ping": self.pong
         }
+    
+    def break_server(self):
+        self.__is_run = False
+    
+    @property
+    def is_running(self):
+        return self.__is_run
 
     def pong(self, request: dict) -> dict:
         response = {
@@ -247,7 +255,7 @@ class Server(BaseServer):
     def run(self):
         self.repeater.do()
 
-        while True:
+        while self.is_running:
             raw_data, addres = self.socket.recvfrom(1024)
             self.socket.settimeout(0.5)
             try:
@@ -265,7 +273,9 @@ class Server(BaseServer):
                 }
 
                 self.socket.sendto(dumps(response).encode(), addres)
-
+            except KeyboardInterrupt as exc:
+                self.break_server()
+                self.repeater.break_()
             except Exception as exc:
                 response = {
                     "status": -127,
