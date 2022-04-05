@@ -256,8 +256,17 @@ class Server(BaseServer):
         self.repeater.do()
 
         while self.is_running:
-            raw_data, addres = self.socket.recvfrom(1024)
+            
+            try:
+                raw_data, addres = self.socket.recvfrom(1024)
+            except KeyboardInterrupt as exc:
+                self.break_server()
+                self.repeater.break_()
+            except Exception as exc: 
+                ...
+            
             self.socket.settimeout(0.5)
+            
             try:
                 request = loads(raw_data.decode())
 
