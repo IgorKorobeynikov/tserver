@@ -92,6 +92,26 @@ API Client here: https://github.com/TwisteRTanks/PyTwistAPI
 ]
 ```
 
+### Available requests:
+`get_online`
+
+`connect`
+
+`disconnect`
+
+`push_data`
+
+`get_data`
+
+`get_messages`
+
+`push_message`
+
+`clear_chat`
+
+`get_map`
+
+`ping`
 ## TODO:
 * Replace all generic typehints
 * Map generation
