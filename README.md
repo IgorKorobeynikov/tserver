@@ -1,4 +1,9 @@
 # TwisteRServer
+[![](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/)
+[![](https://img.shields.io/badge/requirements-0-blue)](https://github.com/TwisteRTanks/TwisteRServer/blob/master/requirements.txt)
+![](https://img.shields.io/github/forks/TwisteRTanks/TwisteRServer)
+![](https://img.shields.io/github/stars/TwisteRTanks/TwisteRServer)
+![](https://img.shields.io/github/issues/TwisteRTanks/TwisteRServer?color=blue)
 
 Multiplayer game-server for TwisteRTanks.
 
