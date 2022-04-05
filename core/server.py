@@ -139,7 +139,7 @@ class Server(BaseServer):
             return response
         else:
             response = {
-                "status": -127,
+                "status": -40,
                 "response": None
             }
             return response
@@ -204,7 +204,7 @@ class Server(BaseServer):
                 "key"
             ]  # key of user by id
 
-        except IndexError as Error:
+        except IndexError as exc:
             response = {
                 "status": -20,
                 "response": None
@@ -212,9 +212,10 @@ class Server(BaseServer):
 
             return response
 
-        except Exception as Error:
+        except Exception as exc:
             response = {
                 "status": -127,
+                "err_content": repr(exc),
                 "response": None
             }
 
@@ -257,7 +258,7 @@ class Server(BaseServer):
                 self.socket.sendto(
                     dumps(self.handle_request(request)).encode(), addres
                 )
-            except JSONDecodeError:
+            except JSONDecodeError as exc:
                 response = {
                     "status": -3,
                     "response": None
