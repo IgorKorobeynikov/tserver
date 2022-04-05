@@ -18,4 +18,4 @@ class MapGenerator(object):
         with open(self.filename, "wb") as map:
             for x in range(self.nx):
                 for y in range(self.ny):
-                    map.write(self.parser.dump((randint(0, 3), x*64, y*64)))
+                    map.write(self.parser.dump((randint(0, 3), x * 64, y * 64)))

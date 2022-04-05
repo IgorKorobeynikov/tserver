@@ -25,6 +25,6 @@ class UdpSocket(socket.socket):
         self.__total_recv += len(raw_data)
 
         return raw_data, addres
-    
+
     def resettimeout(self):
         self.settimeout(None)

@@ -1,5 +1,6 @@
 # Подлежит рефакторингу
 
+
 class Parser(object):
     def __init__(self):
         pass
@@ -17,7 +18,4 @@ class Parser(object):
         id = raw_tile[0]
         x = raw_tile[1]
         y = raw_tile[2]
-        return \
-            (id).to_bytes(2, "big") + \
-            (x).to_bytes(4, "big") + \
-            (y).to_bytes(4, "big")
+        return (id).to_bytes(2, "big") + (x).to_bytes(4, "big") + (y).to_bytes(4, "big")

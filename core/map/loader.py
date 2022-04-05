@@ -15,7 +15,7 @@ class Loader(object):
         raw_data = self.raw_map.read(10)
 
         try:
-            assert(len(raw_data))
+            assert len(raw_data)
         except AssertionError:
             raise StopIteration
 

@@ -12,7 +12,6 @@ from submodules import BList, ListBlockedError, show_stat, Repeater, UdpSocket
 from core.Infrastructure import BaseServer
 
 
-
 class Server(BaseServer):
     def __init__(self, port=9265, max_conns=100, chat_size=10):
         self.socket = UdpSocket()
@@ -39,21 +38,18 @@ class Server(BaseServer):
             "push_message": self.push_message,
             "clear_chat": self.clear_chat,
             "get_map": self.get_map,
-            "ping": self.pong
+            "ping": self.pong,
         }
-    
+
     def break_server(self):
         self.__is_run = False
-    
+
     @property
     def is_running(self):
         return self.__is_run
 
     def pong(self, request: dict) -> dict:
-        response = {
-            "status": 0,
-            "response": None
-        }
+        response = {"status": 0, "response": None}
         return response
 
     def init_map(self):
@@ -68,95 +64,74 @@ class Server(BaseServer):
                         [
                             i.to_bytes(1, "big"),
                             x.to_bytes(2, "big"),
-                            y.to_bytes(2, "big")
-                        ])
+                            y.to_bytes(2, "big"),
+                        ]
+                    )
                 )
 
     def get_map(self, request: dict) -> dict:
-        
+
         response = {
             "status": 0,
             "response": {
                 "checksum": md5(self.raw_map.getvalue()).hexdigest(),
-                "map": list(bytearray(self.raw_map.getvalue()))
-            }
+                "map": list(bytearray(self.raw_map.getvalue())),
+            },
         }
         return response
 
     def clear_chat(self, request: dict) -> dict:
 
-        if request['client_data']['key'] == self.admin_key:
+        if request["client_data"]["key"] == self.admin_key:
             self.msg_buffer.clear()
             # только админы могут чистить чат
             # only admins can clean the chat
-            response = {
-                "status": 0,
-                "response": None
-            }
+            response = {"status": 0, "response": None}
             return response
 
-        response = {
-            "status": -40,
-            "response": None
-        }
+        response = {"status": -40, "response": None}
         return response
 
     @staticmethod
     def reset_keys(data: list) -> list:
         data = deepcopy(data)
         for client_data in data:
-            client_data['key'] = None
+            client_data["key"] = None
         return data
 
     def get_messages(self, request: dict) -> dict:
-        response = {
-            "status": 0,
-            "response": list(self.msg_buffer)
-        }
+        response = {"status": 0, "response": list(self.msg_buffer)}
         return response
 
     def push_message(self, request: dict) -> dict:
-        message = request['request_body']['msg_content']
-        nick = request['request_body']['nick']
+        message = request["request_body"]["msg_content"]
+        nick = request["request_body"]["nick"]
         if len(message):
             self.msg_buffer.append([message, nick])
 
-            response = {
-                "status": 0,
-                "response": None
-
-            }
+            response = {"status": 0, "response": None}
 
             return response
 
     def push_data(self, request: dict) -> dict:
-        id = request['client_data']['id']
+        id = request["client_data"]["id"]
 
-        keyd = self.clients[request["client_data"]["id"]][
-            "key"
-        ]  # key of user by id
+        keyd = self.clients[request["client_data"]["id"]]["key"]  # key of user by id
 
         if keyd == request["client_data"]["key"]:
-            self.clients[id]['player_data'] = request['player_data']
-            
-            self.clients[id]['client_timeout_ms'] = request['client_data']['client_timeout_ms']
-            response = {
-                "status": 0,
-                "response": None
-            }
+            self.clients[id]["player_data"] = request["player_data"]
+
+            self.clients[id]["client_timeout_ms"] = request["client_data"][
+                "client_timeout_ms"
+            ]
+            response = {"status": 0, "response": None}
             return response
         else:
-            response = {
-                "status": -40,
-                "response": None
-            }
+            response = {"status": -40, "response": None}
             return response
 
     def get_data(self, request: dict) -> dict:
-        response = {
-            "status": 0,
-            "response": self.reset_keys(self.clients)
-        }
+        response = {"status": 0, "response": self.reset_keys(self.clients)}
         return response
 
     @property
@@ -165,10 +140,7 @@ class Server(BaseServer):
 
     def get_online(self, *args, **kwargs) -> dict:
 
-        response = {
-            "status": 0,
-            "response": self.online
-        }
+        response = {"status": 0, "response": self.online}
 
         return response
 
@@ -179,30 +151,22 @@ class Server(BaseServer):
             try:
                 request["client_data"]["id"] = len(self.clients)
 
-                response = {
-                    "status": 0,
-                    "response": len(self.clients)
-                }
+                response = {"status": 0, "response": len(self.clients)}
 
                 client_data = {
                     "key": request["client_data"]["key"],
                     "id": request["client_data"]["id"],
                     "addres": addres,
                     "client_timeout_ms": request["client_data"]["client_timeout_ms"],
-
-                    "player_data": request["player_data"]
+                    "player_data": request["player_data"],
                 }
-                
 
                 # self.clients.append(request["client_data"])
                 self.clients.append(client_data)
                 self.addreses.append(addres)
                 return response
             except ListBlockedError:
-                response = {
-                    "status": -1,
-                    "response": None
-                }
+                response = {"status": -1, "response": None}
                 return response
 
     def disconnect(self, request: dict) -> dict:
@@ -213,19 +177,12 @@ class Server(BaseServer):
             ]  # key of user by id
 
         except IndexError as exc:
-            response = {
-                "status": -20,
-                "response": None
-            }
+            response = {"status": -20, "response": None}
 
             return response
 
         except Exception as exc:
-            response = {
-                "status": -127,
-                "err_content": repr(exc),
-                "response": None
-            }
+            response = {"status": -127, "err_content": repr(exc), "response": None}
 
             return response
 
@@ -234,18 +191,12 @@ class Server(BaseServer):
 
             self.addreses.remove(addres)
 
-            response = {
-                "status": 0,
-                "response": None
-            }
+            response = {"status": 0, "response": None}
 
             return response
 
         else:
-            response = {
-                "status": -21,
-                "response": None
-            }
+            response = {"status": -21, "response": None}
 
             return response
 
@@ -256,41 +207,32 @@ class Server(BaseServer):
         self.repeater.do()
 
         while self.is_running:
-            
+
             try:
                 raw_data, addres = self.socket.recvfrom(1024)
             except KeyboardInterrupt as exc:
                 self.break_server()
                 self.repeater.break_()
-            except Exception as exc: 
+            except Exception as exc:
                 ...
-            
+
             self.socket.settimeout(0.5)
-            
+
             try:
                 request = loads(raw_data.decode())
 
                 request["client_data"]["addres"] = addres
 
-                self.socket.sendto(
-                    dumps(self.handle_request(request)).encode(), addres
-                )
+                self.socket.sendto(dumps(self.handle_request(request)).encode(), addres)
             except JSONDecodeError as exc:
-                response = {
-                    "status": -3,
-                    "response": None
-                }
+                response = {"status": -3, "response": None}
 
                 self.socket.sendto(dumps(response).encode(), addres)
             except KeyboardInterrupt as exc:
                 self.break_server()
                 self.repeater.break_()
             except Exception as exc:
-                response = {
-                    "status": -127,
-                    "err_content": repr(exc),
-                    "response": None
-                }
+                response = {"status": -127, "err_content": repr(exc), "response": None}
 
                 self.socket.sendto(dumps(response).encode(), addres)
             self.socket.resettimeout()

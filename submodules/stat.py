@@ -2,18 +2,19 @@
 from platform import system as platform
 from os import system
 
+
 def show_stat(self):
     port = self.port
     clients = self.clients
     max_conns = self.clients.capacity
     sent = self.socket.total_sent
     recv = self.socket.total_recv
-    
+
     if platform() == "Windows":
         system("cls")
-    else: 
+    else:
         system("clear")
-    
+
     print(
         f"""
 ========= Server is started =========
