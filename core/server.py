@@ -24,7 +24,7 @@ from submodules.base_types import ClientDataNullKeys
 STimeOutError = timeout
 
 class Server(BaseServer):
-    def __init__(self, port: int = 9265, max_conns: int = 100, chat_size: int = 10):
+    def __init__(self, port: int = 9265, max_conns: int = 100, chat_size: int = 10) -> None:
         self.socket: UdpSocket = UdpSocket()
         self.addreses: List[Tuple[str, int]] = []  # contains addresses of all connected clients
         self.port: int = port
