@@ -1,8 +1,8 @@
 from core.server import Server
 
 
-def main():
-    server = Server()
+def main() -> None:
+    server: Server = Server()
     try:
         server.run()
     except KeyboardInterrupt:
