@@ -21,6 +21,8 @@ from core.Infrastructure import BaseServer
 from submodules.base_types import ClientRequest
 from submodules.base_types import ClientDataNullKeys
 
+from .base_logger import logger
+
 STimeOutError = timeout
 
 class Server(BaseServer):
@@ -265,6 +267,7 @@ class Server(BaseServer):
         return self.requests[request["request"]].__call__(request)
 
     def run(self) -> None:
+        logger.info("Server is started")
 
         self.repeater.do()
 
@@ -275,7 +278,7 @@ class Server(BaseServer):
             except STimeOutError as exc:
                 continue
             except Exception as exc:
-                ...
+                logger.error(repr(exc))
 
             try:
                 request = loads(raw_data.decode())
@@ -299,5 +302,5 @@ class Server(BaseServer):
                     "err_content": repr(exc), 
                     "response": None
                 }
-
+                logger.error(repr(exc))
                 self.socket.sendto(dumps(response).encode(), addres)
