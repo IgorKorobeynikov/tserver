@@ -1,7 +1,13 @@
 from typing import Any, TypedDict, Dict, Union, Optional
 from typing import final
 
-__all__ = ("PlayerData", "ClientData", "ServerResponse")
+__all__ = (
+    "PlayerData", 
+    "ClientData", 
+    "ClientDataNullKeys", 
+    "ClientRequest", 
+    "ServerResponse"
+)
 
 class PlayerData(TypedDict):
     posx: int
