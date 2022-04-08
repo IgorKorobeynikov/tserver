@@ -34,7 +34,7 @@ class Server(BaseServer):
 
         self.repeater: Repeater = Repeater(1, show_stat, self)
         self.buf_request: Any = None
-        self.msg_buffer: Deque[str] = deque(maxlen=chat_size)
+        self.msg_buffer: Deque[list[str, str]] = deque(maxlen=chat_size)
         self.admin_key: str = uuid4().hex
         self.raw_map: BinaryIO = BytesIO()
         self.__is_run: bool = True
