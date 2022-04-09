@@ -127,5 +127,4 @@ API Client here: https://github.com/TwisteRTanks/PyTwistAPI
 * ~~Python API wrapper lib~~
 * GUI client.
 * Base docs
-* Async
 * Log pull
