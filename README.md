@@ -72,6 +72,7 @@ API Client here: https://github.com/TwisteRTanks/PyTwistAPI
 -3  - Invalid packet.
 
 -2X - Connection is corrupted.
+-22 - Connection is corrupted. Client already connected
 -21 - Connection is corrupted. Invalid key
 -20 - Connection is corrupted. Invalid id
 

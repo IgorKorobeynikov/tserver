@@ -216,7 +216,12 @@ class Server(BaseServer):
                     "response": None
                 }
                 return response
-
+        
+        response = {
+            "status": -22,
+            "response": None
+        }
+        return response
     def disconnect(self, request: ClientRequest) -> ServerResponse:
         addres = request["client_data"]["addres"]
         try:
