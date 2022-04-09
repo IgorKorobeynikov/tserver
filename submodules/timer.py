@@ -4,13 +4,13 @@ from time import time
 
 class Timer(object):
     def __init__(self):
-        self.start = time()
+        self.start: float = time()
 
     @property
-    def elsaped(self):
+    def elsaped(self) -> float:
         return time() - self.start
 
-    def do(self, func, delay, *args, **kwargs):
+    def do(self, func, delay, *args, **kwargs) -> None:
 
         threading.Timer(delay, self.do).start()
         func(*args, **kwargs)
