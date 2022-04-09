@@ -34,7 +34,7 @@ ID     Client IP:PORT        Ping
     )
     for client in clients:
         print(
-            f"{str(client['id']).ljust(7)}{(str(client['addres'][0])+':'+str(client['addres'][1])).ljust(22)}{'1ms.'.ljust(7)}"
+            f"{str(client['id']).ljust(7)}{(str(client['addres'][0])+':'+str(client['addres'][1])).ljust(22)}{str(client['client_timeout_ms']).ljust(7)}"
         )
     print("------------------------------------")
 
