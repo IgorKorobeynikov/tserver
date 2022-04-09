@@ -121,7 +121,7 @@ API Client here: https://github.com/TwisteRTanks/PyTwistAPI
 `ping`
 ## TODO:
 * Replace all generic typehints
-* Map generation
+* ~~Map generation~~
 * Chat (~70% done)
 * ~~API~~
 * ~~Python API wrapper lib~~
