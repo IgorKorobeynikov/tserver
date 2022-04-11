@@ -26,7 +26,7 @@ STimeOutError = timeout
 
 class Server(BaseServer):
     def __init__(self, port: int = 9265, max_conns: int = 100, chat_size: int = 10) -> None:
-        self.socket: UdpSocket = UdpSocket()
+        self.transport: UdpSocket = UdpSocket()
         self.addreses: List[Tuple[str, int]] = []  # contains addresses of all connected clients
         self.port: int = port
         
@@ -40,8 +40,8 @@ class Server(BaseServer):
         self.__is_run: bool = True
 
         self.init_map()
-        self.socket.bind(("", port))
-        self.socket.settimeout(1)
+        self.transport.bind(("", port))
+        self.transport.settimeout(1)
 
         self.requests: Dict[str, Callable] = {
             "get_online": self.get_online,
@@ -278,18 +278,17 @@ class Server(BaseServer):
         while self.is_running:
 
             try:
-                raw_data, addres = self.socket.recvfrom(1024)
+                raw_data, addres = self.transport.recvfrom(1024)
             except STimeOutError as exc:
                 continue
             except Exception as exc:
                 logger.error(repr(exc))
-
             try:
                 request = loads(raw_data.decode())
 
                 request["client_data"]["addres"] = addres
 
-                self.socket.sendto(
+                self.transport.sendto(
                     dumps(self.handle_request(request)).encode(), addres
                 )
 
@@ -298,7 +297,7 @@ class Server(BaseServer):
                     "status": -3, 
                     "response": None
                 }
-                self.socket.sendto(dumps(response).encode(), addres)
+                self.transport.sendto(dumps(response).encode(), addres)
 
             except Exception as exc:
                 response = {
@@ -307,4 +306,4 @@ class Server(BaseServer):
                     "response": None
                 }
                 logger.error(repr(exc))
-                self.socket.sendto(dumps(response).encode(), addres)
+                self.transport.sendto(dumps(response).encode(), addres)
