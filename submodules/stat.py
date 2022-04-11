@@ -7,8 +7,8 @@ def show_stat(self):
     port = self.port
     clients = self.clients
     max_conns = self.clients.capacity
-    sent = self.socket.total_sent
-    recv = self.socket.total_recv
+    sent = self.transport.total_sent
+    recv = self.transport.total_recv
 
     if platform() == "Windows":
         system("cls")
