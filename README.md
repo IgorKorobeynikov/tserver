@@ -9,6 +9,7 @@
 
 Multiplayer game-server for TwisteRTanks.
 
+Only stdlib. Null requirements!
 
 ## Example of simple request:
 ```json5
