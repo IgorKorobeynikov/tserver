@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod, abstractproperty
-from typing import Tuple, _Alias
+from typing import Dict, Tuple, _Alias
+from submodules.base_types import ServerResponse
 
 Port = _Alias(int)
 ClAddres = Tuple[str, Port]
@@ -13,7 +14,7 @@ class Transport(metaclass=ABCMeta):
     def listen(self, buffsize: int, encoding: str) -> Tuple[str, ClAddres]:
         ...
     @abstractmethod
-    def sendto(self, content: str, addr: ClAddres) -> BytesAmount:
+    def sendto(self, content: ServerResponse, addr: ClAddres) -> BytesAmount:
         ...
     @abstractproperty
     def total_sent(self) -> BytesAmount:
