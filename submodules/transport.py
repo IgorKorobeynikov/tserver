@@ -10,7 +10,7 @@ Port = _Alias(int)
 ClAddres = Tuple[str, Port]
 BytesAmount = _Alias(int)
 
-class UdpSocket(UdpSocket, Transport):
+class UdpTransport(UdpSocket, Transport):
     def __init__(self):
         super().__init__()
 
