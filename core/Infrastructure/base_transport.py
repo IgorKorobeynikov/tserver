@@ -1,10 +1,10 @@
 from abc import ABCMeta, abstractmethod, abstractproperty
-from typing import Dict, Tuple, _Alias
+from typing import Dict, Tuple
 from submodules.base_types import ServerResponse
 
-Port = _Alias(int)
+Port = int
 ClAddres = Tuple[str, Port]
-BytesAmount = _Alias(int)
+BytesAmount = int
 
 class Transport(metaclass=ABCMeta):
     @abstractmethod

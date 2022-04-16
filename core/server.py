@@ -14,7 +14,7 @@ from submodules import (
     ListBlockedError, 
     show_stat,
     Repeater, 
-    UdpSocket
+    UdpTransport
 )
 
 from core.Infrastructure import BaseServer
@@ -26,7 +26,7 @@ STimeOutError = timeout
 
 class Server(BaseServer):
     def __init__(self, port: int = 9265, max_conns: int = 100, chat_size: int = 10) -> None:
-        self.transport: UdpSocket = UdpSocket()
+        self.transport: UdpTransport = UdpTransport()
         self.addreses: List[Tuple[str, int]] = []  # contains addresses of all connected clients
         self.port: int = port
         

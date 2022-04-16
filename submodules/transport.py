@@ -3,12 +3,12 @@ from .base_types import ClientRequest, ServerResponse
 from .ext_socket import UdpSocket
 
 from json import dumps, loads
-from typing import _Alias, ByteString, Tuple
+from typing import ByteString, Tuple
 
 
-Port = _Alias(int)
+Port = int
 ClAddres = Tuple[str, Port]
-BytesAmount = _Alias(int)
+BytesAmount = int
 
 class UdpTransport(UdpSocket, Transport):
     def __init__(self):
