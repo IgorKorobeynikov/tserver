@@ -278,18 +278,19 @@ class Server(BaseServer):
         while self.is_running:
 
             try:
-                raw_data, addres = self.transport.recvfrom(1024)
+                packet, addres = self.transport.recvfrom(1024)
             except STimeOutError as exc:
                 continue
             except Exception as exc:
                 logger.error(repr(exc))
+                continue
             try:
-                request = loads(raw_data.decode())
+                request = packet
 
                 request["client_data"]["addres"] = addres
 
                 self.transport.sendto(
-                    dumps(self.handle_request(request)).encode(), addres
+                    self.handle_request(request), addres
                 )
 
             except JSONDecodeError as exc:
@@ -297,7 +298,7 @@ class Server(BaseServer):
                     "status": -3, 
                     "response": None
                 }
-                self.transport.sendto(dumps(response).encode(), addres)
+                self.transport.sendto(response, addres)
 
             except Exception as exc:
                 response = {
@@ -306,4 +307,4 @@ class Server(BaseServer):
                     "response": None
                 }
                 logger.error(repr(exc))
-                self.transport.sendto(dumps(response).encode(), addres)
+                self.transport.sendto(response, addres)
