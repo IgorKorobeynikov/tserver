@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Any
 from core.server import Server
 from submodules.argparser import parser
 
