@@ -1,7 +1,8 @@
+from typing import Tuple
 from core.server import Server
 from submodules.argparser import parser
 
-ARGS = parser.parse_args()
+ARGS: list[Tuple[str, Any]] = parser.parse_args()
 
 def main() -> None:
     server: Server = Server(**dict(ARGS._get_kwargs()))
