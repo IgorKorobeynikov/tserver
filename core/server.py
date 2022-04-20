@@ -1,6 +1,5 @@
-from json import dumps, loads
 from json.decoder import JSONDecodeError
-from typing import Any, Dict, NoReturn, Union, List, Tuple, Deque, BinaryIO, Callable
+from typing import Any, Dict, NoReturn, List, Tuple, Deque, BinaryIO, Callable
 from queue import deque
 from copy import deepcopy
 from uuid import uuid4
@@ -23,6 +22,8 @@ from submodules.base_types import *
 from .base_logger import logger
 
 STimeOutError = timeout
+
+__CAKE__ = "☕ 🎂 ☕"
 
 class Server(BaseServer):
     def __init__(self, port: int = 9265, max_conns: int = 100, chat_size: int = 10) -> None:
