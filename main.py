@@ -1,18 +1,10 @@
 from core.server import Server
-import argparse
+from submodules.argparser import parser
 
-__DESC__ = "TwisteRServer - simple python game server on raw UDP sockets."
-
-# will be rewrited
-parser = argparse.ArgumentParser(description=__DESC__)
-parser.add_argument("--port", type=int, default=9265, help="Server port")
-parser.add_argument("--max_conns", type=int, default=100, help="Count of clients")
-parser.add_argument("--chat_size", type=int, default=10, help="Size of chat buffer")
-args = parser.parse_args()
-
+ARGS = parser.parse_args()
 
 def main() -> None:
-    server: Server = Server(**dict(args._get_kwargs()))
+    server: Server = Server(**dict(ARGS._get_kwargs()))
     try:
         server.run()
     except KeyboardInterrupt:
