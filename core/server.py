@@ -1,4 +1,5 @@
 from json.decoder import JSONDecodeError
+from logging import LogRecord
 from typing import Any, Dict, NoReturn, List, Tuple, Deque, BinaryIO, Callable
 from queue import deque
 from copy import deepcopy
@@ -19,7 +20,7 @@ from submodules import (
 from core.Infrastructure import BaseServer
 from submodules.base_types import *
 
-from .base_logger import logger
+from .base_logger import logger, bufferHandler
 
 STimeOutError = timeout
 
@@ -38,6 +39,7 @@ class Server(BaseServer):
         self.msg_buffer: Deque[list[str, str]] = deque(maxlen=chat_size)
         self.admin_key: str = uuid4().hex
         self.raw_map: BinaryIO = BytesIO()
+        self.logger_messages: list[LogRecord] = bufferHandler.buffer
         self.__is_run: bool = True
 
         self.init_map()
