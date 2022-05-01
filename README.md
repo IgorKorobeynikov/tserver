@@ -128,6 +128,9 @@ API Client here: https://github.com/TwisteRTanks/PyTwistAPI
 `get_map`
 
 `ping`
+
+`get_logs`
+
 ## TODO:
 * Replace all generic typehints
 * ~~Map generation~~
@@ -136,4 +139,4 @@ API Client here: https://github.com/TwisteRTanks/PyTwistAPI
 * ~~Python API wrapper lib~~
 * GUI client.
 * Base docs
-* Log pull
+* ~~Log buffer~~
