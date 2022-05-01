@@ -47,15 +47,19 @@ class Server(BaseServer):
         self.transport.settimeout(1)
 
         self.requests: Dict[str, Callable] = {
-            "get_online": self.get_online,
             "connect": self.connect,
             "disconnect": self.disconnect,
-            "push_data": self.push_data,
+
+            "get_online": self.get_online,
             "get_data": self.get_data,
-            "get_messages": self.get_messages,
-            "push_message": self.push_message,
-            "clear_chat": self.clear_chat,
             "get_map": self.get_map,
+            "get_messages": self.get_messages,
+            "get_logs": self.get_logs,
+
+            "push_data": self.push_data,
+            "push_message": self.push_message,
+            
+            "clear_chat": self.clear_chat,
             "ping": self.pong,
         }
 
@@ -94,6 +98,17 @@ class Server(BaseServer):
                     )
                 )
 
+    def get_logs(self, request: ClientRequest) -> ServerResponse:
+        response = {
+            "status": 0,
+            "response": list(
+                    map(
+                        lambda lr: bufferHandler.format(lr), 
+                        self.logger_messages
+                    )
+                )
+        }
+        return response
     def get_map(self, request: ClientRequest) -> ServerResponse:
 
         response = {
@@ -212,6 +227,9 @@ class Server(BaseServer):
 
                 self.clients.append(client_data)
                 self.addreses.append(addres)
+
+                logger.info(f"Client with addres <{addres}> was connected]")
+                
                 return response
             except ListBlockedError:
                 response = {
