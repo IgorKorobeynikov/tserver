@@ -11,6 +11,13 @@ Multiplayer game-server for TwisteRTanks.
 
 Only stdlib. Null requirements!
 
+## Run with
+```sh
+python3 server.py [-h] [--port] [--max_conns] [--chat_size]
+```
+
+[![](./server.png)](https://github.com/TwisteRTanks/TwisteRServer)
+
 ## Example of simple request:
 ```json5
 /*
