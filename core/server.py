@@ -250,7 +250,7 @@ class Server(BaseServer):
                 request["client_data"]["id"]][
                     "key"
             ]  # key of user by id
-
+            logger.info(f"Client with addres <{addres}> was diconnected]")
         except IndexError as exc:
             response = {
                 "status": -20, 
@@ -260,13 +260,7 @@ class Server(BaseServer):
             return response
 
         except Exception as exc:
-            response = {
-                "status": -127, 
-                "err_content": repr(exc), 
-                "response": None
-            }
-
-            return response
+            raise
 
         if keyd == request["client_data"]["key"]:
             del self.clients[request["client_data"]["id"]]
