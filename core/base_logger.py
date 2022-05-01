@@ -14,3 +14,4 @@ logger.addHandler(bufferHandler)
 
 formatter = logging.Formatter('[%(asctime)s]-<%(name)s>-<%(levelname)s> - %(message)s')
 fileHandler.setFormatter(formatter)
+bufferHandler.setFormatter(formatter)
