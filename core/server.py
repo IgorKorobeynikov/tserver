@@ -1,7 +1,7 @@
 from json.decoder import JSONDecodeError
 from logging import LogRecord
 from typing import Any, Dict, NoReturn, List, Tuple, Deque, BinaryIO, Callable
-from queue import deque
+from collections import deque
 from copy import deepcopy
 from uuid import uuid4
 from random import randint
